@@ -5,6 +5,8 @@
 #include <initializer_list>
 #include <stdexcept>
 #include <utility>
+#include <vector>
+#include <stack>
 
 namespace aisdi
 {
@@ -19,14 +21,24 @@ public:
   using size_type = std::size_t;
   using reference = value_type&;
   using const_reference = const value_type&;
+  using Pair = std::pair<key_type, mapped_type>;
+  using Vector = std::vector<Pair>;
+
 
   class ConstIterator;
   class Iterator;
   using iterator = Iterator;
   using const_iterator = ConstIterator;
+private:
+  size_type SIZE;
+  size_type SIZEMAX;
+  Vector *tab;
+  std::hash <key_type> makeHash;
 
-  HashMap()
-  {}
+public:
+  HashMap(){
+
+  }
 
   HashMap(std::initializer_list<value_type> list)
   {
