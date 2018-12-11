@@ -222,7 +222,7 @@ void thenAssignedObjectsCountWas<OperationCountingObject>(std::size_t count)
   BOOST_CHECK_EQUAL(OperationCountingObject::assignedObjectsCount(), count);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenMap_WhenCreatedWithDefaultConstructor_ThenItIsEmpty,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenMap_WhenCreatedWithDefaultConstructor_ThenItIsEmpty,
                               K,
                               TestedKeyTypes)
 {
@@ -231,7 +231,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenMap_WhenCreatedWithDefaultConstructor_ThenItI
   BOOST_CHECK(map.isEmpty());
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenAddingItem_ThenItIsNoLongerEmpty,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenEmptyMap_WhenAddingItem_ThenItIsNoLongerEmpty,
                               K,
                               TestedKeyTypes)
 {
@@ -242,7 +242,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenAddingItem_ThenItIsNoLongerEmpty
   BOOST_CHECK(!map.isEmpty());
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenGettingIterators_ThenBeginEqualsEnd,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenEmptyMap_WhenGettingIterators_ThenBeginEqualsEnd,
                               K,
                               TestedKeyTypes)
 {
@@ -253,7 +253,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenGettingIterators_ThenBeginEquals
   BOOST_CHECK(map.cbegin() == map.cend());
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNonEmptyMap_WhenGettingIterator_ThenBeginIsNotEnd,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenNonEmptyMap_WhenGettingIterator_ThenBeginIsNotEnd,
                               K,
                               TestedKeyTypes)
 {
@@ -263,7 +263,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNonEmptyMap_WhenGettingIterator_ThenBeginIsNo
   BOOST_CHECK(begin(map) != end(map));
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenMapWithOnePair_WhenIterating_ThenPairIsReturned,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenMapWithOnePair_WhenIterating_ThenPairIsReturned,
                               K,
                               TestedKeyTypes)
 {
@@ -277,7 +277,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenMapWithOnePair_WhenIterating_ThenPairIsReturn
   BOOST_CHECK(++it == map.end());
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenIterator_WhenPostIncrementing_ThenPreviousPositionIsReturned,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenIterator_WhenPostIncrementing_ThenPreviousPositionIsReturned,
                               K,
                               TestedKeyTypes)
 {
@@ -293,7 +293,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenIterator_WhenPostIncrementing_ThenPreviousPos
   BOOST_CHECK(it == map.cend());
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenIterator_WhenPreIncrementing_ThenNewPositionIsReturned,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenIterator_WhenPreIncrementing_ThenNewPositionIsReturned,
                               K,
                               TestedKeyTypes)
 {
@@ -307,7 +307,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenIterator_WhenPreIncrementing_ThenNewPositionI
   BOOST_CHECK(it == map.end());
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEndIterator_WhenIncrementing_ThenOperationThrows,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenEndIterator_WhenIncrementing_ThenOperationThrows,
                               K,
                               TestedKeyTypes)
 {
@@ -319,7 +319,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEndIterator_WhenIncrementing_ThenOperationThr
   BOOST_CHECK_THROW(++(map.cend()), std::out_of_range);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEndIterator_WhenDecrementing_ThenIteratorPointsToLastItem,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenEndIterator_WhenDecrementing_ThenIteratorPointsToLastItem,
                               K,
                               TestedKeyTypes)
 {
@@ -333,7 +333,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEndIterator_WhenDecrementing_ThenIteratorPoin
   BOOST_CHECK_EQUAL(it->first, 1);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenIterator_WhenPreDecrementing_ThenNewIteratorValueIsReturned,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenIterator_WhenPreDecrementing_ThenNewIteratorValueIsReturned,
                               K,
                               TestedKeyTypes)
 {
@@ -347,7 +347,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenIterator_WhenPreDecrementing_ThenNewIteratorV
   BOOST_CHECK_EQUAL(it->first, 1);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenIterator_WhenPostDecrementing_ThenOldIteratorValueIsReturned,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenIterator_WhenPostDecrementing_ThenOldIteratorValueIsReturned,
                               K,
                               TestedKeyTypes)
 {
@@ -361,7 +361,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenIterator_WhenPostDecrementing_ThenOldIterator
   BOOST_CHECK_EQUAL(it->first, 1);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenBeginIterator_WhenDecrementing_ThenOperationThrows,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenBeginIterator_WhenDecrementing_ThenOperationThrows,
                               K,
                               TestedKeyTypes)
 {
@@ -373,7 +373,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenBeginIterator_WhenDecrementing_ThenOperationT
   BOOST_CHECK_THROW(--(map.cbegin()), std::out_of_range);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEndIterator_WhenDereferencing_ThenOperationThrows,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenEndIterator_WhenDereferencing_ThenOperationThrows,
                               K,
                               TestedKeyTypes)
 {
@@ -385,7 +385,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEndIterator_WhenDereferencing_ThenOperationTh
   BOOST_CHECK_THROW(map.cend()->second, std::out_of_range);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenConstIterator_WhenDereferencing_ThenItemIsReturned,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenConstIterator_WhenDereferencing_ThenItemIsReturned,
                               K,
                               TestedKeyTypes)
 {
@@ -398,7 +398,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenConstIterator_WhenDereferencing_ThenItemIsRet
   BOOST_CHECK_EQUAL(it->second, "Answer");
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenSearchingForKey_ThenEndIsReturned,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenEmptyMap_WhenSearchingForKey_ThenEndIsReturned,
                               K,
                               TestedKeyTypes)
 {
@@ -409,7 +409,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenSearchingForKey_ThenEndIsReturne
   BOOST_CHECK(it == end(map));
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNonEmptyMap_WhenSearchingForMissingKey_ThenEndIsReturned,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenNonEmptyMap_WhenSearchingForMissingKey_ThenEndIsReturned,
                               K,
                               TestedKeyTypes)
 {
@@ -421,7 +421,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNonEmptyMap_WhenSearchingForMissingKey_ThenEn
   BOOST_CHECK(it == end(map));
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNonEmptyMap_WhenSearchingForKey_ThenItemIsReturned,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenNonEmptyMap_WhenSearchingForKey_ThenItemIsReturned,
                               K,
                               TestedKeyTypes)
 {
@@ -436,7 +436,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNonEmptyMap_WhenSearchingForKey_ThenItemIsRet
   BOOST_CHECK_EQUAL(it->second, "It!");
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenGettingSize_ThenZeroIsReturnd,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenEmptyMap_WhenGettingSize_ThenZeroIsReturnd,
                               K,
                               TestedKeyTypes)
 {
@@ -445,7 +445,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenGettingSize_ThenZeroIsReturnd,
   BOOST_CHECK_EQUAL(map.getSize(), 0);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNonEmptyMap_WhenGettingSize_ThenItemCountIsReturnd,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenNonEmptyMap_WhenGettingSize_ThenItemCountIsReturnd,
                               K,
                               TestedKeyTypes)
 {
@@ -456,7 +456,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNonEmptyMap_WhenGettingSize_ThenItemCountIsRe
   BOOST_CHECK_EQUAL(map.getSize(), 2);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenMap_WhenInitializingFromListOfPairs_ThenAllItemsAreInMap,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenMap_WhenInitializingFromListOfPairs_ThenAllItemsAreInMap,
                               K,
                               TestedKeyTypes)
 {
@@ -466,7 +466,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenMap_WhenInitializingFromListOfPairs_ThenAllIt
 }
 
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenIterator_WhenDereferencing_ThenItemCanBeChanged,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenIterator_WhenDereferencing_ThenItemCanBeChanged,
                               K,
                               TestedKeyTypes)
 {
@@ -478,7 +478,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenIterator_WhenDereferencing_ThenItemCanBeChang
   thenMapContainsItems(map, { { 42, "Alice" }, { 27, "Bob" } });
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenAddingItem_ThenItemIsInMap,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenEmptyMap_WhenAddingItem_ThenItemIsInMap,
                               K,
                               TestedKeyTypes)
 {
@@ -489,7 +489,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenAddingItem_ThenItemIsInMap,
   thenMapContainsItems(map, { { 42, "Alice" } });
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNonEmptyMap_WhenChangingItem_ThenNewValueIsInMap,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenNonEmptyMap_WhenChangingItem_ThenNewValueIsInMap,
                               K,
                               TestedKeyTypes)
 {
@@ -500,7 +500,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNonEmptyMap_WhenChangingItem_ThenNewValueIsIn
   thenMapContainsItems(map, { { 42, "Alice" }, { 27, "Bob" } });
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenCreatingCopy_ThenBothMapsAreEmpty,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenEmptyMap_WhenCreatingCopy_ThenBothMapsAreEmpty,
                               K,
                               TestedKeyTypes)
 {
@@ -511,7 +511,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenCreatingCopy_ThenBothMapsAreEmpt
   BOOST_CHECK(map.isEmpty());
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNonEmptyMap_WhenCreatingCopy_ThenAllItemsAreCopied,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenNonEmptyMap_WhenCreatingCopy_ThenAllItemsAreCopied,
                               K,
                               TestedKeyTypes)
 {
@@ -524,7 +524,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNonEmptyMap_WhenCreatingCopy_ThenAllItemsAreC
   thenMapContainsItems(other, { { 753, "Rome" }, { 1789, "Paris" } });
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenMovingToOther_ThenMapIsEmpty,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenEmptyMap_WhenMovingToOther_ThenMapIsEmpty,
                               K,
                               TestedKeyTypes)
 {
@@ -534,7 +534,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenMovingToOther_ThenMapIsEmpty,
   BOOST_CHECK(other.isEmpty());
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNonEmptyMap_WhenMovingToOther_ThenAllItemsAreMoved,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenNonEmptyMap_WhenMovingToOther_ThenAllItemsAreMoved,
                               K,
                               TestedKeyTypes)
 {
@@ -551,7 +551,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNonEmptyMap_WhenMovingToOther_ThenAllItemsAre
   thenMapContainsItems(other, { { 753, "Rome" }, { 1789, "Paris" } });
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenAssigningToOther_ThenOtherMapIsEmpty,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenEmptyMap_WhenAssigningToOther_ThenOtherMapIsEmpty,
                               K,
                               TestedKeyTypes)
 {
@@ -563,7 +563,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenAssigningToOther_ThenOtherMapIsE
   BOOST_CHECK(other.isEmpty());
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNonEmptyMap_WhenAssigningToOther_ThenAllElementsAreCopied,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenNonEmptyMap_WhenAssigningToOther_ThenAllElementsAreCopied,
                               K,
                               TestedKeyTypes)
 {
@@ -576,7 +576,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNonEmptyMap_WhenAssigningToOther_ThenAllEleme
   thenMapContainsItems(other, { { 753, "Rome" }, { 1789, "Paris" } });
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenSelfAssigning_ThenNothingHappens,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenEmptyMap_WhenSelfAssigning_ThenNothingHappens,
                               K,
                               TestedKeyTypes)
 {
@@ -587,7 +587,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenSelfAssigning_ThenNothingHappens
   BOOST_CHECK(map.isEmpty());
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNotEmptyMap_WhenSelfAssigning_ThenNothingHappens,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenNotEmptyMap_WhenSelfAssigning_ThenNothingHappens,
                               K,
                               TestedKeyTypes)
 {
@@ -598,7 +598,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNotEmptyMap_WhenSelfAssigning_ThenNothingHapp
   thenMapContainsItems(map, { { 42, "Alice" }, { 27, "Bob" } });
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenMoveAssigning_ThenMapIsEmpty,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenEmptyMap_WhenMoveAssigning_ThenMapIsEmpty,
                               K,
                               TestedKeyTypes)
 {
@@ -610,7 +610,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenMoveAssigning_ThenMapIsEmpty,
   BOOST_CHECK(other.isEmpty());
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNonEmptyMap_WhenMoveAssigning_ThenAllElementsAreMoved,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenNonEmptyMap_WhenMoveAssigning_ThenAllElementsAreMoved,
                               K,
                               TestedKeyTypes)
 {
@@ -628,7 +628,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNonEmptyMap_WhenMoveAssigning_ThenAllElements
   thenMapContainsItems(other, { { 753, "Rome" }, { 1789, "Paris" } });
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenReadingValueOfAnyKey_ThenExceptionIsThrown,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenEmptyMap_WhenReadingValueOfAnyKey_ThenExceptionIsThrown,
                               K,
                               TestedKeyTypes)
 {
@@ -637,7 +637,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenReadingValueOfAnyKey_ThenExcepti
   BOOST_CHECK_THROW(map.valueOf(1), std::out_of_range);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNotEmptyMap_WhenReadingValueOfMissingKey_ThenExceptionIsThrown,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenNotEmptyMap_WhenReadingValueOfMissingKey_ThenExceptionIsThrown,
                               K,
                               TestedKeyTypes)
 {
@@ -646,7 +646,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNotEmptyMap_WhenReadingValueOfMissingKey_Then
   BOOST_CHECK_THROW(map.valueOf(1), std::out_of_range);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNotEmptyMap_WhenReadingValueOfAKey_ThenValueIsReturned,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenNotEmptyMap_WhenReadingValueOfAKey_ThenValueIsReturned,
                               K,
                               TestedKeyTypes)
 {
@@ -655,7 +655,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNotEmptyMap_WhenReadingValueOfAKey_ThenValueI
   BOOST_CHECK_EQUAL(map.valueOf(42), "Alice");
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNotEmptyMap_WhenChangingValueOfAKey_ThenValueIsChanged,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenNotEmptyMap_WhenChangingValueOfAKey_ThenValueIsChanged,
                               K,
                               TestedKeyTypes)
 {
@@ -666,7 +666,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNotEmptyMap_WhenChangingValueOfAKey_ThenValue
   thenMapContainsItems(map, { { 42, "Chuck" }, { 27, "Bob" } });
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenRemovingValueByKey_ThenExceptionIsThrown,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenEmptyMap_WhenRemovingValueByKey_ThenExceptionIsThrown,
                               K,
                               TestedKeyTypes)
 {
@@ -675,7 +675,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenEmptyMap_WhenRemovingValueByKey_ThenException
   BOOST_CHECK_THROW(map.remove(1), std::out_of_range);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNotEmptyMap_WhenRemovingValueByWrongKey_ThenExceptionIsThrown,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenNotEmptyMap_WhenRemovingValueByWrongKey_ThenExceptionIsThrown,
                               K,
                               TestedKeyTypes)
 {
@@ -684,7 +684,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNotEmptyMap_WhenRemovingValueByWrongKey_ThenE
   BOOST_CHECK_THROW(map.remove(1), std::out_of_range);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNotEmptyMap_WhenRemovingValueByKey_ThenItemIsRemoved,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenNotEmptyMap_WhenRemovingValueByKey_ThenItemIsRemoved,
                               K,
                               TestedKeyTypes)
 {
@@ -695,7 +695,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNotEmptyMap_WhenRemovingValueByKey_ThenItemIs
   thenMapContainsItems(map, { { 42, "Alice" } });
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenSingleItemMap_WhenRemovingValueByKey_ThenMapBecomesEmpty,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenSingleItemMap_WhenRemovingValueByKey_ThenMapBecomesEmpty,
                               K,
                               TestedKeyTypes)
 {
@@ -706,7 +706,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenSingleItemMap_WhenRemovingValueByKey_ThenMapB
   BOOST_CHECK(map.isEmpty());
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNotEmptyMap_WhenErasingEnd_ThenExceptionIsThrown,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenNotEmptyMap_WhenErasingEnd_ThenExceptionIsThrown,
                               K,
                               TestedKeyTypes)
 {
@@ -715,7 +715,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNotEmptyMap_WhenErasingEnd_ThenExceptionIsThr
   BOOST_CHECK_THROW(map.remove(end(map)), std::out_of_range);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNotEmptyMap_WhenRemovingItemByIterator_ThenItemIsRemoved,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenNotEmptyMap_WhenRemovingItemByIterator_ThenItemIsRemoved,
                               K,
                               TestedKeyTypes)
 {
@@ -726,7 +726,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenNotEmptyMap_WhenRemovingItemByIterator_ThenIt
   thenMapContainsItems(map, { { 27, "Bob" } });
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenSingleItemMap_WhenRemovingItemByIterator_ThenMapBecomesEmpty,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenSingleItemMap_WhenRemovingItemByIterator_ThenMapBecomesEmpty,
                               K,
                               TestedKeyTypes)
 {
@@ -737,7 +737,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenSingleItemMap_WhenRemovingItemByIterator_Then
   BOOST_CHECK(map.isEmpty());
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenTwoEmptyMaps_WhenComparingThem_ThenTheyAreReportedAsEqual,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenTwoEmptyMaps_WhenComparingThem_ThenTheyAreReportedAsEqual,
                               K,
                               TestedKeyTypes)
 {
@@ -747,7 +747,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenTwoEmptyMaps_WhenComparingThem_ThenTheyAreRep
   BOOST_CHECK(map == other);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenTwoEqualMaps_WhenComparingThem_ThenTheyAreReportedAsEqual,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenTwoEqualMaps_WhenComparingThem_ThenTheyAreReportedAsEqual,
                               K,
                               TestedKeyTypes)
 {
@@ -757,7 +757,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenTwoEqualMaps_WhenComparingThem_ThenTheyAreRep
   BOOST_CHECK(map == other);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenTwoEquivalentMaps_WhenComparingThem_ThenTheyAreReportedAsEqual,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenTwoEquivalentMaps_WhenComparingThem_ThenTheyAreReportedAsEqual,
                               K,
                               TestedKeyTypes)
 {
@@ -767,7 +767,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenTwoEquivalentMaps_WhenComparingThem_ThenTheyA
   BOOST_CHECK(map == other);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenTwoMapsWithDifferentValues_WhenComparingThem_ThenTheyAreNotEqual,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenTwoMapsWithDifferentValues_WhenComparingThem_ThenTheyAreNotEqual,
                               K,
                               TestedKeyTypes)
 {
@@ -777,7 +777,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GivenTwoMapsWithDifferentValues_WhenComparingThem_
   BOOST_CHECK(map != other);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GivenTwoMapsWithDifferentKeys_WhenComparingThem_ThenTheyAreNotEqual,
+BOOST_AUTO_TEST_CASE_TEMPLATE(HashGivenTwoMapsWithDifferentKeys_WhenComparingThem_ThenTheyAreNotEqual,
                               K,
                               TestedKeyTypes)
 {
