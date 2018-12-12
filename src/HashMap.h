@@ -191,7 +191,7 @@ public:
 		}
 		return it;
     }
-
+	
     void remove(const key_type& key) {
 		int HASH = makeHash(key) % SIZEMAX;
 		if (SIZE == 0 || tab[HASH].empty()) {
@@ -210,7 +210,7 @@ public:
 			}
 		}
     }
-
+	//prawdopodobnie do poparawy
     void remove(const const_iterator& it) {
 		if (tab[it.HASH].empty() || it.pos >= tab[it.HASH].size() || SIZE == 0) {
 			throw std::out_of_range("Proba usuniecia elemntu nie istniejacego");
@@ -309,24 +309,95 @@ public:
 		pos = other.pos;
     }
 
-    ConstIterator& operator++() {
-        throw std::runtime_error("TODO");
+    ConstIterator& operator++() { //PRE
+		int tmpHash = HASH;
+		if (tab[HASH].empty())
+			throw std::out_of_range("Iterator operator++");
+		if (tab[HASH].size() - 1 > pos) {
+			++pos;
+			return *this;
+		}
+		else {
+			++HASH;
+			pos = 0;
+			while (HASH < MAXSIZE - 1 && tab[HASH].empty()) // no nie wiem czy tutaj to nie pozbyc siê -1
+				++HASH;
+			if (HASH == MAX_SIZE - 1) HASH = tmpHash; //tu tez
+			return *this;
+		}
     }
 
-    ConstIterator operator++(int) {
-        throw std::runtime_error("TODO");
+    ConstIterator operator++(int) { //POST
+		int tmpHash = HASH;
+		if (tab[HASH].empty())
+			throw std::out_of_range("Iterator operator++");
+		ConstIterator it;
+		it.tab = tab;
+		it.HASH = HASH;
+		it.pos = pos;
+		if (tab[HASH].size() - 1 > pos) {
+			++pos;
+		}
+		else {
+			++HASH;
+			pos = 0;
+			while (HASH < MAXSIZE - 1 && tab[HASH].empty()) // no nie wiem czy tutaj to nie pozbyc siê -1
+				++HASH;
+			if (HASH == MAX_SIZE - 1) HASH = tmpHash; //tu tez
+		}
+		return it;
+		
     }
 
-    ConstIterator& operator--() {
-        throw std::runtime_error("TODO");
+    ConstIterator& operator--() { //PRE
+		if (tab[HASH].size() == 0 && HASH == 0)
+			throw std::out_of_range("Iterator operator--");
+		if (pos > 0) {
+			pos--;
+			return *this;
+		}
+		else {
+			HASH--;
+			while (HASH >= 0 && tab[HASH].empty())
+				HASH--;
+			if (HASH == -1)
+				throw std::out_of_range("Iterator operator--");
+
+			pos = tab[HASH].size() - 1;
+		}
+		return *this;
     }
 
-    ConstIterator operator--(int) {
-        throw std::runtime_error("TODO");
+    ConstIterator operator--(int) { //POST
+		if (tab[HASH].size() == 0 && HASH == 0)
+			throw std::out_of_range("Iterator operator--");
+
+		ConstIterator tmp;
+		tmp.tab = tab;
+		tmp.HASH = HASH;
+		tmp.pos = pos;
+
+		if (pos > 0){
+			pos--;
+		}
+		else{
+			HASH--;
+
+			while (HASH >= 0 && tab[HASH].empty())
+				HASH--;
+			if (HASH == -1)	
+				throw std::out_of_range("Iterator operator--");
+
+			pos = tab[HASH].size() - 1;
+		}
+
+		return tmp;
     }
 
     reference operator*() const {
-        throw std::runtime_error("TODO");
+		if (tab[HASH].empty())
+			throw std::out_of_range("Iterator operator*");
+		return tab[HASH][pos];
     }
 
     pointer operator->() const {
@@ -334,8 +405,9 @@ public:
     }
 
     bool operator==(const ConstIterator& other) const {
-        (void)other;
-        throw std::runtime_error("TODO");
+		if (HASH == other.HASH && pos == other.pos && tab == other.tab)
+			return true;
+		else return false;
     }
 
     bool operator!=(const ConstIterator& other) const {

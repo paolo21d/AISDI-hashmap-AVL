@@ -29,6 +29,14 @@ private:
 		Node *left, *right;
 		value_type *value;
 		int bf;
+		Node(key_type &key, mapped_type &val) {
+			up = nullptr;
+			left = nullptr;
+			right = nullptr;
+			value = new value_type;
+			value->first = key;
+			value->second = val;
+		}
 	};
 	size_type SIZE;
 	Node *root;
@@ -42,7 +50,7 @@ private:
 		delete node;
 	}
 	//ROTACJE RR, LL, RL, LR
-	void RR(Node * A) {
+	void RR(Node *A) {
 		Node * B = A->right, *p = A->up;
 
 		A->right = B->left;
@@ -64,7 +72,7 @@ private:
 			B->bf = 1;
 		}
 	}
-	void LL(Node * A) {
+	void LL(Node *A) {
 		Node * B = A->left, *p = A->up;
 
 		A->left = B->right;
@@ -86,7 +94,7 @@ private:
 			B->bf = -1;
 		}
 	}
-	void RL(Node * A) {
+	void RL(Node *A) {
 		Node * B = A->right, *C = B->left, *p = A->up;
 
 		B->left = C->right;
@@ -113,7 +121,7 @@ private:
 
 		C->bf = 0;
 	}
-	void LR(Node * A) {
+	void LR(Node *A) {
 		Node * B = A->left, *C = B->right, *p = A->up;
 
 		B->right = C->left;
@@ -150,14 +158,14 @@ private:
 		 }
 		return node;
 	}
-	Node* findMin(Node* t)const {
-		Node* tmp = t;
+	Node* findMin(Node *node)const {
+		Node* tmp = node;
 		while (tmp->left != nullptr)
 			tmp = tmp->left;
 		return tmp;
 	}
-	Node* findMax(Node*t)const {
-		Node* tmp = t;
+	Node* findMax(Node *node)const {
+		Node* tmp = node;
 		while (tmp->right != nullptr)
 			tmp = tmp->right;
 		return tmp;
@@ -202,7 +210,7 @@ private:
 		return node;
 	}
 	//wyjmuje wezel z drzewa i go zwraca, zwalaniac trzeba osobno
-	Node* removeNode(Node * node) {
+	Node* removeNode(Node *node) {
 		Node  *t, *y, *z;
 		bool nest;
 
@@ -284,7 +292,82 @@ private:
 		}
 		return node;
 	}
-	
+	Node* insertNode(Node *node) {
+		++SIZE;
+		Node * w, *p, *r;
+		bool t;
+		w = node;//trzeba wczesniej stworzyc ten wezel
+		/*w = new Node(node->value);        // tworzymy dynamicznie nowy wêze³
+		w->left = w->right = w->up = nullptr;
+		w->value = new 
+		w->bf = 0;*/
+
+		//----------------------------------------
+		// FAZA 1 - wstawienie wêz³a do drzewa AVL
+		//----------------------------------------
+
+		p = root;         
+
+		if (!p) root = w; //puste drzewo, to nasz wezel staje sie korzeniem
+		else {
+			while (true)
+				if (k < p->key) {
+					if (!p->left) {
+						p->left = w;
+						break;
+					}
+					p = p->left;
+				}
+				else {
+					if (!p->right) {
+						p->right = w;
+						break;
+					}
+					p = p->right;
+				}
+
+				w->up = p;
+
+	 //---------------------------------
+	 // FAZA 2 - równowa¿enie drzewa AVL
+	 //---------------------------------
+
+				if (p->bf) p->bf = 0;
+				else {
+					if (p->left == w)
+						p->bf = 1;
+					else
+						p->bf = -1;
+
+					r = p->up;
+					t = false;
+					while (r) {
+						if (r->bf) {
+							t = true;
+							break;
+						};
+						if (r->left == p) r->bf = 1;
+						else r->bf = -1;
+
+						p = r; 
+						r = r->up;
+					}
+
+					if (t) { 
+						if (r->bf == 1) {
+							if (r->right == p) r->bf = 0;
+							else if (p->bf == -1) LR(root, r);
+							else LL(root, r);
+						}
+						else {
+							if (r->left == p) r->bf = 0;
+							else if (p->bf == 1) RL(root, r);
+							else RR(root, r);
+						}
+					}
+				}
+		}
+	}
 
 public:
     TreeMap() {
@@ -339,10 +422,15 @@ public:
 		if (SIZE == 0) return true;
 		else return false;
     }
-	
+	//moja radosna tworczosc
     mapped_type& operator[](const key_type& key) {
-        (void)key;
-        throw std::runtime_error("TODO");
+		Node *tmp = treeSearch(key);
+		if (tmp != nullptr) {
+			return tmp->value->second;
+		}
+		tmp = new Node(key, mapped_type{});
+		insertNode(tmp);
+		return tmp->value->second;
     }
 
     const mapped_type& valueOf(const key_type& key) const {
