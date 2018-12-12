@@ -44,6 +44,26 @@ private:
 		}
 		throw std::out_of_range("Nie ma elementu o podanym kluczu w mapie");
 	}
+
+	int findFirstHASH() const {
+		if (SIZE == 0) return 0;
+		int i = 0;
+		while (i < MAX_SIZE && tab[i].size() == 0) {
+			++i;
+		}
+		return i;
+	}
+
+	int findLastHASH() const {
+		if (SIZE == 0) return 0;
+		int i = MAX_SIZE - 1;
+		while (i >= 0 && tab[i].size() == 0) {
+			--i;
+		}
+
+		i++;
+		return i;
+	}
 public:
     HashMap() {
         SIZE = 0;
@@ -218,19 +238,39 @@ public:
     }
 
     iterator begin() {
-        throw std::runtime_error("TODO");
+		Iterator it;
+		it.tab = tab;
+		it.HASH = findFirstHASH();
+		it.pos = 0;
+
+		return it;
     }
 
     iterator end() {
-        throw std::runtime_error("TODO");
+		Iterator it;
+		it.tab = tab;
+		it.HASH = findLastHASH();
+		it.pos = 0;
+
+		return it;
     }
 
     const_iterator cbegin() const {
-        throw std::runtime_error("TODO");
+		ConstIterator it;
+		it.tab = tab;
+		it.HASH = findFirstHASH();
+		it.pos = 0;
+
+		return it;
     }
 
     const_iterator cend() const {
-        throw std::runtime_error("TODO");
+		ConstIterator it;
+		it.tab = tab;
+		it.HASH = findLastHASH();
+		it.pos = 0;
+
+		return it;
     }
 
     const_iterator begin() const {
@@ -250,12 +290,23 @@ public:
     using value_type = typename HashMap::value_type;
     using pointer = const typename HashMap::value_type*;
 
+	using Pair = std::pair<const key_type, mapped_type>;
+	using Vector = std::vector<Pair>;
+	int MAX_SIZE = 999999;
+	Vector *tab;
+	int HASH;
+	int pos;
+
     explicit ConstIterator() {
+		tab = nullptr;
+		HASH = 0;
+		pos = 0;
     }
 
     ConstIterator(const ConstIterator& other) {
-        (void)other;
-        throw std::runtime_error("TODO");
+		tab = other.tab;
+		HASH = other.HASH;
+		pos = other.pos;
     }
 
     ConstIterator& operator++() {

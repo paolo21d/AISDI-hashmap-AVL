@@ -23,38 +23,178 @@ public:
     using iterator = Iterator;
     using const_iterator = ConstIterator;
 
+private:
+	struct  Node {
+		Node* up;
+		Node *left, *right;
+		value_type *value;
+		int bf;
+	};
+	size_type SIZE;
+	Node *root;
+
+	void Clear(Node *node) {
+		if (node == nullptr) return;
+		Clear(node->left);
+		Clear(node->right);
+
+		delete node->value;
+		delete node;
+	}
+public:
     TreeMap() {
+		root = nullptr;
+		SIZE = 0;
     }
+	~TreeMap() {
+		Clear(root);
+		SIZE = 0;
+	}
 
     TreeMap(std::initializer_list<value_type> list) {
-        (void)list; // disables "unused argument" warning, can be removed when method is implemented.
-        throw std::runtime_error("TODO");
+		for (auto it = list.begin(); it < list.end(); it++)	{
+			this->operator[](it->first) = it->second;
+		}
     }
 
     TreeMap(const TreeMap& other) {
-        (void)other;
-        throw std::runtime_error("TODO");
+		for (auto it = other.begin(); it != other.end(); it++) {
+			this->operator[](it->first) = it->second;
+		}
     }
 
     TreeMap(TreeMap&& other) {
-        (void)other;
-        throw std::runtime_error("TODO");
+		*this = std::move(other);
     }
 
     TreeMap& operator=(const TreeMap& other) {
-        (void)other;
-        throw std::runtime_error("TODO");
+		if (this == other)
+			return *this;
+
+		Clear(root);
+		SIZE = 0;
+		root = nullptr;
+		for (auto it = other.begin(); it != other.end(); it++) {
+			this->operator[](it->first) = it->second;
+		}
+		return *this;
     }
 
     TreeMap& operator=(TreeMap&& other) {
-        (void)other;
-        throw std::runtime_error("TODO");
+		Clear(root);
+		root = nullptr;
+		SIZE = 0;
+
+		std::swap(root, other.root);
+		std::swap(SIZE, other.SIZE);
+		return *this;
     }
 
     bool isEmpty() const {
-        throw std::runtime_error("TODO");
+		if (SIZE == 0) return true;
+		else return false;
     }
+	//Implementacja rotacji: RR, LL, RL, LR
 
+	void RR(Node * A) {
+		Node * B = A->right, *p = A->up;
+
+		A->right = B->left;
+		if (A->right) A->right->up = A;
+
+		B->left = A;
+		B->up = p;
+		A->up = B;
+
+		if (p) {
+			if (p->left == A) p->left = B;
+			else p->right = B;
+		}
+		else root = B;
+
+		if (B->bf == -1) A->bf = B->bf = 0;
+		else {
+			A->bf = -1;
+			B->bf = 1;
+		}
+	}
+	void LL(Node * A) {
+		Node * B = A->left, *p = A->up;
+
+		A->left = B->right;
+		if (A->left) A->left->up = A;
+
+		B->right = A;
+		B->up = p;
+		A->up = B;
+
+		if (p) {
+			if (p->left == A) p->left = B;
+			else p->right = B;
+		}
+		else root = B;
+
+		if (B->bf == 1) A->bf = B->bf = 0;
+		else {
+			A->bf = 1;
+			B->bf = -1;
+		}
+	}
+	void RL(Node * A) {
+		Node * B = A->right, *C = B->left, *p = A->up;
+
+		B->left = C->right;
+		if (B->left) B->left->up = B;
+
+		A->right = C->left;
+		if (A->right) A->right->up = A;
+
+		C->left = A;
+		C->right = B;
+		A->up = B->up = C;
+		C->up = p;
+
+		if (p) {
+			if (p->left == A) p->left = C;
+			else p->right = C;
+		}
+		else root = C;
+
+		if (C->bf == -1) A->bf = 1;
+		else A->bf = 0;
+		if (C->bf == 1) B->bf = -1;
+		else B->bf = 0;
+
+		C->bf = 0;
+	}
+	void LR(Node * A) {
+		Node * B = A->left, *C = B->right, *p = A->up;
+
+		B->right = C->left;
+		if (B->right) B->right->up = B;
+
+		A->left = C->right;
+		if (A->left) A->left->up = A;
+
+		C->right = A;
+		C->left = B;
+		A->up = B->up = C;
+		C->up = p;
+
+		if (p) {
+			if (p->left == A) p->left = C;
+			else p->right = C;
+		}
+		else root = C;
+
+		if (C->bf == 1) A->bf = -1;
+		else A->bf = 0;
+		if (C->bf == -1) B->bf = 1;
+		else B->bf = 0;
+
+		C->bf = 0;
+	}
+	////KONIEC rotacji
     mapped_type& operator[](const key_type& key) {
         (void)key;
         throw std::runtime_error("TODO");
