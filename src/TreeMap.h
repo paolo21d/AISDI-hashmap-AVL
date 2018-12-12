@@ -41,7 +41,7 @@ private:
 		delete node->value;
 		delete node;
 	}
-	///ROTACJE RR, LL, RL, LR
+	//ROTACJE RR, LL, RL, LR
 	void RR(Node * A) {
 		Node * B = A->right, *p = A->up;
 
@@ -140,7 +140,7 @@ private:
 
 		C->bf = 0;
 	}
-	////KONIEC rotacji
+	///KONIEC rotacji
 	Node* treeSearch(Node *node, key_type &key)const {
 		while (node != nullptr && key != node->value->first) {
 			if (key < node->value->first)
@@ -150,6 +150,142 @@ private:
 		 }
 		return node;
 	}
+	Node* findMin(Node* t)const {
+		Node* tmp = t;
+		while (tmp->left != nullptr)
+			tmp = tmp->left;
+		return tmp;
+	}
+	Node* findMax(Node*t)const {
+		Node* tmp = t;
+		while (tmp->right != nullptr)
+			tmp = tmp->right;
+		return tmp;
+	}
+	Node* prevNode(Node *node)const  {
+		/*Node * r;
+		if (node) {
+			if (node->left) {
+				node = node->left;
+				while (node->right) node = node->right;
+			}
+			else
+				do {
+					r = node;
+					node = node->up;
+				} while (node && node->right != r);
+		}
+		return node;*/
+		if (node->left != nullptr) {
+			node = findMax(node->left);
+			return node;
+		}
+		Node* tmp = node->up;
+		while (tmp != nullptr && tmp->right != node) {
+			node = tmp;
+			tmp = tmp->up;
+		}
+		node = tmp;
+		return node;
+	}
+	Node* nextNode(Node *node)const {
+		if (node->right != nullptr) {
+			node = findMin(node->right);
+			return node;
+		}
+		Node* tmp = node->up;
+		while (tmp != nullptr && tmp->left != node) {
+			node = tmp;
+			tmp = tmp->up;
+		}
+		node = tmp;
+		return node;
+	}
+	//wyjmuje wezel z drzewa i go zwraca, zwalaniac trzeba osobno
+	Node* removeNode(Node * node) {
+		Node  *t, *y, *z;
+		bool nest;
+
+		if (node->left && node->right) {
+			y = removeNode(root, prevNode(node));
+			nest = false;
+		}
+		else {
+			if (node->left) {
+				y = node->left;
+				node->left = nullptr;
+			}
+			else {
+				y = node->right;
+				node->right = nullptr;
+			}
+			node->bf = 0;
+			nest = true;
+		}
+
+		if (y) {
+			y->up = node->up;
+			y->left = node->left;
+			if (y->left)  y->left->up = y;
+			y->right = node->right;
+			if (y->right)  y->right->up = y;
+			y->bf = node->bf;
+		}
+
+		if (node->up) {
+			if (node->up->left == node) node->up->left = y;
+			else node->up->right = y;
+		}
+		else root = y;
+
+		if (nest) {
+			z = y;
+			y = node->up;
+			while (y) {
+				if (!y->bf) {
+					// Przypadek nr 1
+					if (y->left == z)  y->bf = -1;
+					else y->bf = 1;
+					break;
+				}
+				else {
+					if (((y->bf == 1) && (y->left == z)) || ((y->bf == -1) && (y->right == z))) {
+						// Przypadek nr 2
+						y->bf = 0;
+						z = y;
+						y = y->up;
+					}
+					else {
+						if (y->left == z)  t = y->right;
+						else t = y->left;
+						if (!t->bf) {
+							// Przypadek 3A
+							if (y->bf == 1) LL(y);
+							else RR(y);
+							break;
+						}
+						else if (y->bf == t->bf) {
+							// Przypadek 3B
+							if (y->bf == 1) LL(y);
+							else RR(y);
+							z = t;
+							y = t->up;
+						}
+						else {
+							// Przypadek 3C
+							if (y->bf == 1) LR(y);
+							else RL(y);
+							z = y->up;
+							y = z->up;
+						}
+					}
+				}
+			}
+		}
+		return node;
+	}
+	
+
 public:
     TreeMap() {
 		root = nullptr;
@@ -242,19 +378,27 @@ public:
     }
 
     void remove(const key_type& key) {
-        (void)key;
-        throw std::runtime_error("TODO");
+		Node *tmp = treeSearch(root, key);
+		if (tmp == nullptr)
+			throw std::out_of_range("Nie ma takiego elemntu do usuniecia");
+		removeNode(tmp);
+		delete tmp->value;
+		delete tmp;
     }
 
     void remove(const const_iterator& it) {
-        (void)it;
-        throw std::runtime_error("TODO");
+		Node *tmp = it.node;
+		if (tmp == nullptr)
+			throw std::out_of_range("Nie ma takiego elemntu do usuniecia");
+		removeNode(tmp);
+		delete tmp->value;
+		delete tmp;
     }
 
     size_type getSize() const {
 		return SIZE;
     }
-
+	//Prawdopodonie do poprawy
     bool operator==(const TreeMap& other) const {
 		if (SIZE != other.SIZE)
 			return false;
@@ -324,6 +468,7 @@ public:
     using iterator_category = std::bidirectional_iterator_tag;
     using value_type = typename TreeMap::value_type;
     using pointer = const typename TreeMap::value_type*;
+
 	Node *node;
 	const TreeMap *tree;
 
@@ -335,20 +480,40 @@ public:
 		tree = other->tree;
     }
 
-    ConstIterator& operator++() {
-        throw std::runtime_error("TODO");
+    ConstIterator& operator++() { //PREinkrementacja
+		if (node == nullptr)
+			throw std::out_of_range("Iterator null");
+		node = tree->nextNode(node);
+		return *this;
     }
 
-    ConstIterator operator++(int) {
-        throw std::runtime_error("TODO");
+    ConstIterator operator++(int) { //POSTinkrementacja
+		if (node == nullptr)
+			throw std::out_of_range("Iterator null");
+
+		ConstIterator it;
+		it.tree = tree;
+		it.node = node;
+		node = tree->nextNode(node);
+		return it;
     }
 
-    ConstIterator& operator--() {
-        throw std::runtime_error("TODO");
+    ConstIterator& operator--() { //PREdekrementacja
+		if (node == nullptr)
+			throw std::out_of_range("Iterator null");
+		node = tree->prevNode(node);
+		return *this;
     }
 
-    ConstIterator operator--(int) {
-        throw std::runtime_error("TODO");
+    ConstIterator operator--(int) { //POSTdekrementacja
+		if (node == nullptr)
+			throw std::out_of_range("Iterator null");
+
+		ConstIterator it;
+		it.tree = tree;
+		it.node = node;
+		node = tree->prevNode(node);
+		return it;
     }
 
     reference operator*() const {
