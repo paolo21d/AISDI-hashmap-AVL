@@ -123,7 +123,16 @@ struct Fixture
 };
 
 } // namespace
-
+namespace std
+{
+	template <> struct hash<OperationCountingObject>
+	{
+	    size_t operator()( const OperationCountingObject & x ) const
+	    {
+		return hash<int>()( int(x) );
+	    }
+	};
+}
 template <typename K>
 using Map = aisdi::HashMap<K, std::string>;
 
