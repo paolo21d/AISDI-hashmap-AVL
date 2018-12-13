@@ -48,7 +48,7 @@ private:
 	int findFirstHASH() const {
 		if (SIZE == 0) return 0;
 		int i = 0;
-		while (i < MAX_SIZE && tab[i].size() == 0) {
+		while (i < SIZEMAX && tab[i].size() == 0) {
 			++i;
 		}
 		return i;
@@ -56,7 +56,7 @@ private:
 
 	int findLastHASH() const {
 		if (SIZE == 0) return 0;
-		int i = MAX_SIZE - 1;
+		int i = SIZEMAX - 1;
 		while (i >= 0 && tab[i].size() == 0) {
 			--i;
 		}
@@ -191,7 +191,7 @@ public:
 		}
 		return it;
     }
-	
+
     void remove(const key_type& key) {
 		int HASH = makeHash(key) % SIZEMAX;
 		if (SIZE == 0 || tab[HASH].empty()) {
@@ -292,7 +292,7 @@ public:
 
 	using Pair = std::pair<const key_type, mapped_type>;
 	using Vector = std::vector<Pair>;
-	int MAX_SIZE = 999999;
+	int MAXSIZE = 999999;
 	Vector *tab;
 	int HASH;
 	int pos;
@@ -313,7 +313,7 @@ public:
 		int tmpHash = HASH;
 		if (tab[HASH].empty())
 			throw std::out_of_range("Iterator operator++");
-		if (tab[HASH].size() - 1 > pos) {
+		if ((int)tab[HASH].size() - 1 > pos) {
 			++pos;
 			return *this;
 		}
@@ -322,7 +322,7 @@ public:
 			pos = 0;
 			while (HASH < MAXSIZE - 1 && tab[HASH].empty()) // no nie wiem czy tutaj to nie pozbyc siê -1
 				++HASH;
-			if (HASH == MAX_SIZE - 1) HASH = tmpHash; //tu tez
+			if (HASH == MAXSIZE - 1) HASH = tmpHash; //tu tez
 			return *this;
 		}
     }
@@ -343,10 +343,10 @@ public:
 			pos = 0;
 			while (HASH < MAXSIZE - 1 && tab[HASH].empty()) // no nie wiem czy tutaj to nie pozbyc siê -1
 				++HASH;
-			if (HASH == MAX_SIZE - 1) HASH = tmpHash; //tu tez
+			if (HASH == MAXSIZE - 1) HASH = tmpHash; //tu tez
 		}
 		return it;
-		
+
     }
 
     ConstIterator& operator--() { //PRE
@@ -385,7 +385,7 @@ public:
 
 			while (HASH >= 0 && tab[HASH].empty())
 				HASH--;
-			if (HASH == -1)	
+			if (HASH == -1)
 				throw std::out_of_range("Iterator operator--");
 
 			pos = tab[HASH].size() - 1;

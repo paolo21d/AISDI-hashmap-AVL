@@ -29,7 +29,7 @@ private:
 		Node *left, *right;
 		value_type *value;
 		int bf;
-		Node(key_type &key, mapped_type &val) {
+		Node(const key_type &key, mapped_type &val) {
 			up = nullptr;
 			left = nullptr;
 			right = nullptr;
@@ -40,7 +40,7 @@ private:
 	};
 	size_type SIZE;
 	Node *root;
-	//usuwanie poddrzew podanego wierzcholka i tego wierzcholka, dla node==root zostanie usuniete cale drzewo 
+	//usuwanie poddrzew podanego wierzcholka i tego wierzcholka, dla node==root zostanie usuniete cale drzewo
 	void Clear(Node *node) {
 		if (node == nullptr) return;
 		Clear(node->left);
@@ -149,7 +149,7 @@ private:
 		C->bf = 0;
 	}
 	///KONIEC rotacji
-	Node* treeSearch(Node *node, key_type &key)const {
+	Node* treeSearch(Node *node, const key_type &key)const {
 		while (node != nullptr && key != node->value->first) {
 			if (key < node->value->first)
 				node = node->left;
@@ -299,19 +299,19 @@ private:
 		w = node;//trzeba wczesniej stworzyc ten wezel
 		/*w = new Node(node->value);        // tworzymy dynamicznie nowy wêze³
 		w->left = w->right = w->up = nullptr;
-		w->value = new 
+		w->value = new
 		w->bf = 0;*/
 
 		//----------------------------------------
 		// FAZA 1 - wstawienie wêz³a do drzewa AVL
 		//----------------------------------------
 
-		p = root;         
+		p = root;
 
 		if (!p) root = w; //puste drzewo, to nasz wezel staje sie korzeniem
 		else {
-			while (true)
-				if (k < p->key) {
+			while (true){
+				if (node->value->first < p->value->first) {
 					if (!p->left) {
 						p->left = w;
 						break;
@@ -324,6 +324,7 @@ private:
 						break;
 					}
 					p = p->right;
+				}
 				}
 
 				w->up = p;
@@ -349,11 +350,11 @@ private:
 						if (r->left == p) r->bf = 1;
 						else r->bf = -1;
 
-						p = r; 
+						p = r;
 						r = r->up;
 					}
 
-					if (t) { 
+					if (t) {
 						if (r->bf == 1) {
 							if (r->right == p) r->bf = 0;
 							else if (p->bf == -1) LR(root, r);
@@ -396,7 +397,7 @@ public:
     }
 
     TreeMap& operator=(const TreeMap& other) {
-		if (this == other)
+		if (*this == *other)
 			return *this;
 
 		Clear(root);
@@ -424,7 +425,7 @@ public:
     }
 	//moja radosna tworczosc
     mapped_type& operator[](const key_type& key) {
-		Node *tmp = treeSearch(key);
+		Node *tmp = treeSearch(root, key);
 		if (tmp != nullptr) {
 			return tmp->value->second;
 		}
@@ -514,11 +515,11 @@ public:
     }
 
     iterator end() {
-		/*Iterator it;
+		Iterator it;
 		it.tree = this;
 		it.node = nullptr;
-		return it;*/
-		return Iterator(this, nullptr);
+		return it;
+		//return Iterator(this, nullptr);
     }
 
     const_iterator cbegin() const {
@@ -533,11 +534,11 @@ public:
     }
 
     const_iterator cend() const {
-		/*ConstIterator it;
+		ConstIterator it;
 		it.tree = this;
 		it.node = nullptr;
-		return it;*/
-		return ConstIterator(this, nullptr);
+		return it;
+		//return ConstIterator(this, nullptr);
     }
 
     const_iterator begin() const {
@@ -561,6 +562,8 @@ public:
 	const TreeMap *tree;
 
     explicit ConstIterator(TreeMap *t, Node *n):tree(t), node(n) {
+    }
+    explicit ConstIterator() {
     }
 
     ConstIterator(const ConstIterator& other) {
@@ -632,6 +635,7 @@ public:
     using pointer = typename TreeMap::value_type*;
 
     explicit Iterator() {
+
     }
 
     Iterator(const ConstIterator& other)
